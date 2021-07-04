@@ -42,16 +42,14 @@ class DataProducerThread(dataProducer: DataProducer,
 
   def send(message: String): Unit = {
     val msgArray = message.split("\\s")
-    val msgTmp = "\"ts\":" + msgArray(0) + "\",\"index\":\"" + msgArray(1) + "\",\"mf01\":\"" + msgArray(2) + "\",\"mf02\":\"" + msgArray(3) + "\",\"mf03\":\"" + msgArray(4)+"\",\"pc13\":\"" + msgArray(5) + "\",\"pc14\":\"" + msgArray(6) + "\",\"pc15\":\"" + msgArray(7) + "\",\"pc25\":\"" + msgArray(8) + "\",\"pc26\":\"" + msgArray(9) + "\",\"pc27\":\"" + msgArray(10) + "\",\"res\":\"" + msgArray(11)+"\""
+    val msgTmp = "\"ts\":" + msgArray(0) + "\",\"index\":" + msgArray(1).toInt + ",\"mf01\":" + msgArray(2).toInt + ",\"mf02\":" + msgArray(3).toInt + ",\"mf03\":" + msgArray(4).toInt +",\"pc13\":" + msgArray(5).toInt + ",\"pc14\":" + msgArray(6).toInt + ",\"pc15\":" + msgArray(7).toInt + ",\"pc25\":" + msgArray(8).toInt + ",\"pc26\":" + msgArray(9).toInt + ",\"pc27\":" + msgArray(10).toInt + ",\"res\":" + msgArray(11).toInt+""
     sendToKafka(topic, msgTmp)
   }
 
   def sendToKafka(topic: String, message: String): Unit = {
-    //val msgWithIdAndTs = s"\"${getNextMessageId(topic)}\";$currentTime;$message"
-    
     var messageID = getNextMessageId(topic)
     //val msgWithIdAndTs = "{\"" + messageID +"\":{" + message + "}}"
-      val msgWithIdAndTs = "{\"messageID\":\"" + messageID +"\"," + message + "}"
+    val msgWithIdAndTs = "{\"messageID\":" + messageID.toInt +"," + message + "}"
     val record = new ProducerRecord[String, String](topic, msgWithIdAndTs)
     dataProducer.getKafkaProducer.send(record)
     logger.debug(s"Sent value $msgWithIdAndTs to topic $topic.")
