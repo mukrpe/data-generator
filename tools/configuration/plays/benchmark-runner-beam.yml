@@ -1,0 +1,32 @@
+---
+
+# Prepare Kafka topics
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Compile Project"
+      include: ../roles/benchmark/tasks/compile.yml home=~
+      #  when: compile_project != 'no'
+    - name: "Create Kafka Topics"
+      include: ../roles/kafka-topic/tasks/create.yml
+#    - name: "Reassign Kafka Topics"
+#      include: ../roles/kafka-topic/tasks/reassign.yml
+#    - name: "Reassign Verify Kafka Topics"
+#      include: ../roles/kafka-topic/tasks/reassignVerify.yml
+#    - name: "Generate ERP data"
+#      include: ../roles/benchmark/tasks/generate_erp_data.yml
+
+
+# Run data sender and validate SUT's results
+- hosts: 127.0.0.1
+  connection: local
+  vars_files:
+    - ../group_vars/all
+  tasks:
+    - name: "Start Datasender"
+      include: ../roles/benchmark/tasks/start_datasender.yml
+    - name: "Waiting a few seconds for streaming system to finish queries."
+      pause:
+        seconds: 2400
