@@ -1,6 +1,7 @@
 FROM guenter/sbt_scala_java:latest
 
 RUN apt-get update && apt-get install -y software-properties-common && apt-get install -y python-pip && pip install ansible && apt-get install -y git
+RUN apt-get install -y vim
 RUN mkdir /dataIngest
 RUN mkdir /dataIngest/sketchbench-data-ingesiton
 RUN cd /dataIngest/sketchbench-data-ingesiton \
