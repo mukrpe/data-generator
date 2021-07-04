@@ -6,5 +6,7 @@ RUN mkdir /dataIngest/sketchbench-data-ingesiton
 RUN cd /dataIngest/sketchbench-data-ingesiton \
            git clone https://github.com/mukrpe/sketchbench-data-ingestion.git
 WORKDIR /dataIngest/sketchbench-data-ingesiton
-RUN sbt assembly && ansible-playbook -vvvv tools/configuration/plays/benchmark-runner-beam.yml
+RUN sbt assembly
+
+# ansible-playbook -vvvv tools/configuration/plays/benchmark-runner-beam.yml
 
