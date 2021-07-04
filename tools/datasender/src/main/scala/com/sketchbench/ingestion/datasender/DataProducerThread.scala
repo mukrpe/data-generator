@@ -50,7 +50,8 @@ class DataProducerThread(dataProducer: DataProducer,
     //val msgWithIdAndTs = s"\"${getNextMessageId(topic)}\";$currentTime;$message"
     
     var messageID = getNextMessageId(topic)
-    val msgWithIdAndTs = "{\"" + messageID +"\":{" + message + "}}"
+    //val msgWithIdAndTs = "{\"" + messageID +"\":{" + message + "}}"
+    val msgWithIdAndTs = "{\"messageID\":\"" + messageID +"\"," + message + "}"
 
     val record = new ProducerRecord[String, String](topic, msgWithIdAndTs)
     dataProducer.getKafkaProducer.send(record)
