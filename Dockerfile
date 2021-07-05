@@ -1,13 +1,12 @@
 FROM guenter/sbt_scala_java:latest
 
-RUN apt-get update && apt-get install -y software-properties-common && apt-get install -y python-pip && pip install ansible && apt-get install -y git
-RUN apt-get install -y vim
-RUN mkdir /dataIngest
-RUN mkdir /dataIngest/sketchbench-data-ingesiton
-RUN cd /dataIngest/sketchbench-data-ingesiton \
-           git clone https://github.com/mukrpe/sketchbench-data-ingestion.git
-WORKDIR /dataIngest/sketchbench-data-ingesiton
+RUN apt-get update && \
+    apt-get install -y \
+        software-properties-common \
+        python-pip  \
+        vim && \
+    pip install ansible
+RUN mkdir -p /dataIngest/sketchbench-data-ingestion
+COPY . /dataIngest/sketchbench-data-ingestion/
+WORKDIR /dataIngest/sketchbench-data-ingestion
 RUN sbt assembly
-
-# ansible-playbook -vvvv tools/configuration/plays/benchmark-runner-beam.yml
-
